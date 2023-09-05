@@ -48,23 +48,25 @@ function setup() {
 function draw() {
   // zwarte achtergrond
   background(0, 0, 0);
-
+///alle postities array
+for (var i=0; i<xPosities.length;i++){
   // teken
   noStroke;
-  fill(255, 255, 255);
-  rect(x, y, BREEDTE, BREEDTE);
+  fill[i]= [(159, 43, 104),(),(),()];
+  rect(xPosities[i], yPosities[i], BREEDTE, BREEDTE);
 
   // update positie
-  xPosities = xPosities + speedX;
-  yPosities = yPosities + speedY;
+  xPosities[i] = xPosities[i] + speedX[i];
+  yPosities[i] = yPosities[i] + speedY[i];
 
   // stuiter evt. tegen de kanten
-  if (x <= 0 || x + BREEDTE >= width) {
-    speedX = speedX * -1;
+  if (xPosities[i] <= 0 || xPosities[i] + BREEDTE >= width) {
+    speedX[i] = speedX[i] * -1;
   }
 
-  if (y <= 0 || y + BREEDTE >= height) {
-    speedY = speedY * -1;
+  if (yPosities[i]<= 0 || yPosities[i] + BREEDTE >= height) {
+    speedY[i] = speedY[i] * -1;
   }
 
+}
 }
