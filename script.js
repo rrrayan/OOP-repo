@@ -1,6 +1,6 @@
- /* Opdracht Objectgeorienteerd programmeren
-    Informatica - Emmauscollege Rotterdam
- */
+/* Opdracht Objectgeorienteerd programmeren
+   Informatica - Emmauscollege Rotterdam
+*/
 
 /* ******************************************************* */
 /* instellingen om foutcontrole van je code beter te maken */
@@ -8,15 +8,59 @@
 ///<reference path="p5.global-mode.d.ts" />
 "use strict"
 
+/* ********************************************* */
+/* Klassendefinities                             */
+/* ********************************************* */
+
+class Mens {
+  x;
+  y;
+  speedX;
+  speedY;
+  isBesmet;
+  breedte;
+
+  constructor(newX, newY, newSpeedX, newSpeedY) {
+    this.x = newX;
+    this.y = newY;
+    this.speedX = newSpeedX;
+    this.speedY = newSpeedY;
+    this.breedte = 20;
+    this.speedY = speedY;
+    this.isBesmet = Falses;
+  }
+
+  show() {
+    noStroke();
+    fill(255, 255, 255);  // wit
+
+    rect(this.x, this.y, this.breedte, this.breedte);
+    if (isBesmet = True) {
+      fill(255, 0, 0);  // rood
+    }
+  }
+
+  update() {
+    // update positie
+    this.x = this.x - this.speedX;
+    this.y = this.y - this.speedY;
+
+    // stuiter tegen randen
+    if (this.x <= 0 || this.x + this.breedte >= width) {
+      this.speedX = this.speedX * -1;
+    }
+
+    if (this.y <= 0 || this.y + this.breedte >= height) {
+      this.speedY = this.speedY * -1;
+    }
+  }
+}
+
 
 /* ********************************************* */
 /* globale variabelen die je gebruikt in je game */
 /* ********************************************* */
-var xPosities;
-var yPosities;
-var speedX;
-var speedY;
-const BREEDTE = 20;
+var mensen = [];        // lege array voor de mens-objecten
 
 
 
@@ -33,11 +77,25 @@ function setup() {
   // Maak een canvas (rechthoek) waarin je je speelveld kunt tekenen
   createCanvas(1280, 720);
 
-  // initialiseer waarden
-  xPosities = [192, 450, 800, 120, 75];               // midden van de breedte van het canvas
-  yPosities = [182, 430, 700, 100, 45];              // midden van de hoogte van het canvas
-  speedX = [2, 4, -3, -5, 1];      // random waarde tussen -5 en 5
-  speedY = [5, -2, 3, -1, -4];      // 👆
+  // maak 25 random mensen
+  for (var teller = 0; teller < 25; teller++) {
+    // we moeten ze niet te dicht bij de rand tekenen
+    // om geen problemen met stuiteren te krijgen
+    var ruimteTotRand = 50;
+    mensen[0].isBesmet = true;
+
+    // creëer random positie en snelheid
+    var randomX = random(ruimteTotRand, width - ruimteTotRand);
+    var randomY = random(ruimteTotRand, height - ruimteTotRand);
+    var randomSpeedX = random(-5, 5);
+    var randomSpeedY = random(-5, 5);
+
+    // maak nieuw mensobject
+    var nieuwMens = new Mens(randomX, randomY, randomSpeedX, randomSpeedY);
+    
+    // voeg mensobject toe aan array
+    mensen.push(nieuwMens);
+  }
 }
 
 /**
@@ -48,25 +106,18 @@ function setup() {
 function draw() {
   // zwarte achtergrond
   background(0, 0, 0);
-///alle postities array
-for (var i=0; i<xPosities.length;i++){
-  // teken
-  noStroke;
-  fill[i]= [(159, 43, 104),(),(),()];
-  rect(xPosities[i], yPosities[i], BREEDTE, BREEDTE);
+  
 
-  // update positie
-  xPosities[i] = xPosities[i] + speedX[i];
-  yPosities[i] = yPosities[i] + speedY[i];
+  // ga alle waarden in de arrays af:
+  for (var i = 0; i < mensen.length; i++) {
+    // verwijs met 'mens' naar het mens-object die bij deze
+    // iteratie van de loop hoort.
+    var mens = mensen[i];
+    
+    // teken
+    mens.show();
 
-  // stuiter evt. tegen de kanten
-  if (xPosities[i] <= 0 || xPosities[i] + BREEDTE >= width) {
-    speedX[i] = speedX[i] * -1;
+    // update positie en stuiter eventueel
+    mens.update();
   }
-
-  if (yPosities[i]<= 0 || yPosities[i] + BREEDTE >= height) {
-    speedY[i] = speedY[i] * -1;
-  }
-
-}
 }
